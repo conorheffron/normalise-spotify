@@ -3,3 +3,5 @@
 *.xml
 *.pyc
 /python
+/weka_notes
+*.arff
