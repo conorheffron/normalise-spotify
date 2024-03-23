@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 
 import evaluation
@@ -28,7 +30,8 @@ def normalise(df, decimals):
 
 if __name__ == '__main__':
     # Main run configurations
-    decimals = 3
+    decimals = sys.argv[1]
+    print("The number of decimals set is %s" % str(decimals))
 
     # Run assignment 2 code
-    assignment_2(decimals)
+    assignment_2(int(decimals))

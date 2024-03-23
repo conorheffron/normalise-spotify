@@ -1,0 +1,7 @@
+
+*.iml
+*.xml
+*.pyc
+/python
+/weka_notes
+*.arff
