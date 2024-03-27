@@ -1,16 +1,15 @@
 import pandas as pd
 
+
 def playlist_genre(df, decimals):
     # Note: Genre is class label (5X) but plan to verify as categorical (nominal) feature
     playlist_genre_dict = {'edm' : 1, 'latin' : 2, 'pop' : 3, 'rap' : 4, 'rock' : 5, None: 0}
-
-    # Create dictionary mapping fetal health classification string to integer
-    dict_len = len(playlist_genre_dict)
 
     # Assign int value for genre to new column 'playlist_genre_int'
     df["playlist_genre_int"] = df["playlist_genre"].apply(lambda x: playlist_genre_dict.get(x))
 
     # absolute difference (after normalisation)
+    dict_len = len(playlist_genre_dict)
     df["z_i_playlist_genre"] = df["playlist_genre_int"].apply(lambda x: round(abs((x - dict_len) / dict_len), decimals))
 
 
@@ -33,11 +32,8 @@ def numerical_features(c, df, decimals):
     df[mean_c] = pd.to_numeric(df[c]).median()
     df[sd_c] = pd.to_numeric(df[c]).std()
     df[var_c] = pd.to_numeric(df[c]).var()
-    # if c == "acousticness" or c == "energy":
-    #     # already normalised to range[0,1]
-    #     df[z_i] = df[c]
-    # else:
-    df[z_i] = round(df[diff_curr_min_c] / df[diff_max_min_c], decimals)  # Rounding to 3 decimals
+
+    df[z_i] = round(df[diff_curr_min_c] / df[diff_max_min_c], decimals)  # Rounding to decimals specified
 
     # For numeric or continuous variables
     # The absolute difference after normalisation to range [0, 1] is preferred
@@ -48,4 +44,4 @@ def numerical_features(c, df, decimals):
     print("Median of " + c + " is: " + str(pd.to_numeric(df[c]).median()))
     print("Standard Deviation of " + c + " is: " + str(pd.to_numeric(df[c]).std()))
     print("Variance of " + c + " is: " + str(pd.to_numeric(df[c]).var()))
-    print("Zi sum value " + c + " is: " + str(pd.to_numeric(df[z_i].sum())))
+    print("Z score value " + c + " is: " + str(pd.to_numeric(df[z_i].sum())))
