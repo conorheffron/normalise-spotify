@@ -2,9 +2,9 @@
 
 ## Min-Max Normalisation of Spotify Data
 
-### Sample CLI usage: python main.py `number_of_decimals_for_rounding`
-
 ### See full report at [report](https://conorheffron.github.io/normalise-spotify/assignment-2.pdf)
+
+### Sample CLI usage: python main.py `number_of_decimals_for_rounding`
 
 ```shell
  python main.py 3
