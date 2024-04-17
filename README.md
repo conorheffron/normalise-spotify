@@ -1,3 +1,5 @@
+![Proof HTML](https://github.com/conorheffron/normalise-spotify/actions/workflows/proof-html.yml/badge.svg)
+
 # normalise-spotify
 
 ## Min-Max Normalisation of Spotify Data
