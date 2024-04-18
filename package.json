@@ -1,0 +1,8 @@
+{
+  "name": "normalise-spotify",
+  "version": "2.5.2",
+  "description": "Min-Max Normalisation of Spotify Music Data",
+  "dependencies": {
+    "@primer/css": "17.0.1"
+  }
+}
