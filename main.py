@@ -8,7 +8,7 @@ import normalise as normy
 
 def assignment_2(decimals):
     # Read spotify data
-    df = pd.read_csv('./spotify_23211267.csv')
+    df = pd.read_csv('./spotify.csv')
 
     # Print (# observations, # variables)
     print("Spotify data dimensions: " + str(df.shape))
