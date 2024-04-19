@@ -1,6 +1,8 @@
-# normalise-spotify
+![Proof HTML](https://github.com/conorheffron/normalise-spotify/actions/workflows/proof-html.yml/badge.svg)
 
 ## Min-Max Normalisation of Spotify Data
+
+### See full report at [report](https://conorheffron.github.io/normalise-spotify/assignment-2.pdf)
 
 ### Sample CLI usage: python main.py `number_of_decimals_for_rounding`
 
