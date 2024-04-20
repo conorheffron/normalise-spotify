@@ -2,7 +2,7 @@
 
 ## Min-Max Normalisation of Spotify Data
 
-### See full report at [report](https://conorheffron.github.io/normalise-spotify/assignment-2.pdf)
+### See full report at [report](https://conorheffron.github.io/normalise-spotify/report.pdf)
 
 ### Sample CLI usage: python main.py `number_of_decimals_for_rounding`
 
