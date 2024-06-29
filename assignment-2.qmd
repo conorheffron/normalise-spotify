@@ -1,0 +1,143 @@
+---
+title: "Machine Learning - Assignment 2 (Spotify)"
+author: "Conor Heffron (23211267)"
+format: pdf
+editor: visual
+---
+
+## Load R libraries
+
+```{r}
+library(tidyverse)
+library(dendextend)
+library(formatR)
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+```
+
+## Load Spotify Data
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+path = "./"
+spotify_23211267 <- read_csv(paste(path, "spotify.csv", sep = "/"), 
+                             na = "NA")
+# View(spotify_23211267)
+```
+
+## Show Data Dimensions, Structure, Summary
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+dim(spotify_23211267)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+str(spotify_23211267)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+summary(spotify_23211267)
+```
+
+## Hiearchial Cluster via Euclidean Distance of Spotify Data
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+hc_spotify <- hclust(dist(spotify_23211267, method = 'euclidean'), method = 'complete')
+```
+
+## Segment Spotify Data into 5 clusters / groups
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+grp5 <- cutree(hc_spotify, k = 5)
+segmented_spotify <- mutate(spotify_23211267, cluster =  grp5)
+
+# Plots
+ggplot(segmented_spotify, aes(x = loudness, y=acousticness, color = factor(cluster))) + geom_point() + facet_wrap(~playlist_genre)
+
+ggplot(segmented_spotify, aes(x = loudness, y=speechiness, color = factor(cluster))) + geom_point() + facet_wrap(~playlist_genre)
+
+ggplot(segmented_spotify, aes(x = loudness, y=instrumentalness, color = factor(cluster))) + geom_point() + facet_wrap(~playlist_genre)
+
+ggplot(segmented_spotify, aes(x = loudness, y=danceability, color = factor(cluster))) + geom_point() + facet_wrap(~playlist_genre)
+
+ggplot(segmented_spotify, aes(x = loudness, y=energy, color = factor(cluster))) + geom_point() + facet_wrap(~playlist_genre)
+
+ggplot(segmented_spotify, aes(mode, fill = factor(cluster))) + geom_bar() + facet_wrap(~playlist_genre)
+
+ggplot(segmented_spotify, aes(x = loudness, y=tempo, color = factor(cluster))) + geom_point() + facet_wrap(~playlist_genre)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+avg_dend_obj <- as.dendrogram(hc_spotify)
+avg_col_dend <- color_branches(avg_dend_obj, h = 16000)
+
+# Create PDF for plotting
+pdf("plots/plots_avg_col_dendrogram.pdf", width=40, height=15)
+
+# Plotting
+plot(avg_col_dend)
+plot(cut(avg_col_dend, h=16000)$upper, 
+     main="Upper tree of cut at h=16000")
+plot(cut(avg_col_dend, h=16000)$lower[[2]], 
+     main="Second branch of lower tree with cut at h=16000")
+
+# Close the PDF file's associated graphics device 
+dev.off()
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+path_weka <- "/Users/conorheffron/Library/CloudStorage/GoogleDrive-conor.heffron@ucdconnect.ie/My Drive/UCD/MSc in AI for Medicine and Medical Research/Courses/Trimester 1/COMP47460-Machine Learning/COMP47460-Machine Learning (Blended Del)-202324 Autumn - 1062023 - 839 PM/Assignment-2/weka_notes/"
+weka_acc <- read_csv(paste(path_weka, "weka_acc.csv", sep = "/"))
+```
+
+## Get Data Dimensions & Summary, Print Data Frame
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+dim(weka_acc)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+summary(weka_acc)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+weka_acc
+```
+
+## Plot for voting with 3x Combination Rules(KNN K=1, Multilayer Perceptron Neural Network (MP NN), JV8 (Decision Tree))
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+ggplot(weka_acc %>% filter(substr(Type, 1, 4) != "Vote" & Bag == 0), aes(x = Type, y = `%`, color = Accuracy, group = Accuracy)) + geom_line(size = 1)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+ggplot(weka_acc %>% filter(substr(Type, 1, 4) == "Vote" & Bag == 0), aes(x = Type, y = `%`, color = Accuracy, group = Accuracy)) + geom_line(size = 1)
+```
+
+## Plot Ensembles by Bagging (Bag == 2-\>20 in increments of 2)
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+ggplot(weka_acc %>% filter(Bag != 0), aes(y = `%`, x = Bag, color = Accuracy, group = Accuracy)) + geom_point() + geom_line(size = 0.31) + facet_wrap(~Type) 
+```
+
+## Build Linear Regression Model (predict energy based on tempo, loudness, liveness)
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+# library()
+lm_energy1 <- lm(formula = energy ~ tempo + loudness + liveness, data = spotify_23211267)
+summary(lm_energy1)
+plot(lm_energy1, pch = 16, col = "blue") #Plot the results
+# abline(lm_energy1) #Add a regression line
+confint(lm_energy1)
+sigma(lm_energy1)/mean(spotify_23211267$energy)
+```
+
+```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+lm_energy2 <- lm(formula = energy ~ tempo * loudness * liveness, data = spotify_23211267)
+summary(lm_energy2)
+plot(lm_energy2, pch = 16, col = "blue") #Plot the results
+# abline(lm_energy2) #Add a regression line
+confint(lm_energy2)
+
+# Lower value here so is the more accurate model
+sigma(lm_energy2)/mean(spotify_23211267$energy) 
+```
