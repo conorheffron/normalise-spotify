@@ -1,8 +1,10 @@
 import main
 import pytest
 
-def test_assignment2():
+@pytest.mark.parametrize("decimals", [1, 2, 3])
+def test_assignment2(decimals):
   try:
-    main.run(["python", "main.py", "2"], capture_output=True, text=True)
+    result = main.assignment_2(decimals)
+    print(result)
   except Exception as e:
     pytest.fail(f"An error occurred: {e}")
