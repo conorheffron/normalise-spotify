@@ -30,7 +30,7 @@ h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
 idna==3.10
-ipykernel==6.29.5
+ipykernel==7.1.0
 ipython==9.4.0
 ipython_pygments_lexers==1.1.1
 isoduration==20.11.0
