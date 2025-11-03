@@ -2,7 +2,7 @@ numpy==2.3.4
 pandas==2.3.1
 plotly==6.3.1
 pluggy==1.6.0
-pytest==8.4.1
+pytest==8.4.2
 requests==2.32.4
 Send2Trash==1.8.3
 setuptools==80.9.0
