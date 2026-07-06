@@ -1,4 +1,4 @@
-numpy==2.5.0
+numpy==2.5.1
 pandas==3.0.4
 plotly==6.8.0
 pluggy==1.6.0
